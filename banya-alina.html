@@ -383,7 +383,130 @@ body.nav-open{overflow:hidden;}
 .center-text{text-align:center;}
 .mt-lg{margin-top:56px;}
 .text-narrow{max-width:640px;margin-left:auto;margin-right:auto;}
+/* =====================================================
+   MOBILE CENTER FIX
+   исправление смещения блоков на мобильных устройствах
+===================================================== */
 
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    position: relative;
+}
+
+/* контейнеры всегда по центру */
+.container {
+    width: 100%;
+    max-width: var(--wrap);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* защита от элементов шире экрана */
+main,
+section,
+header,
+footer,
+article,
+div {
+    max-width: 100%;
+}
+
+img,
+svg,
+.ph {
+    max-width: 100%;
+}
+
+
+/* декоративный пар */
+.hero,
+.final-cta {
+    overflow: hidden;
+}
+
+.steam-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.wisp {
+    max-width: 100vw;
+}
+
+
+/* галерея */
+.gallery-grid,
+.gallery-item {
+    min-width: 0;
+    max-width: 100%;
+}
+
+
+/* кнопки */
+.btn {
+    max-width: 100%;
+}
+
+
+/* мобильные исправления */
+@media(max-width:640px){
+
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+
+    .hero__actions {
+        width: 100%;
+    }
+
+
+    .hero__actions .btn {
+        width: 100%;
+        white-space: normal;
+    }
+
+
+    /* lightbox больше не вылезает за экран */
+    .lightbox__prev {
+        left: 8px;
+    }
+
+    .lightbox__next {
+        right: 8px;
+    }
+
+
+    /* карточки */
+    .banya-card,
+    .price-card,
+    .why-card,
+    .review-card {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+
+    /* FAQ */
+    .faq-q {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+
+/* дополнительная защита от горизонтального сдвига */
+* {
+    max-width: 100%;
+}
 </style>
 </head>
 <body>
