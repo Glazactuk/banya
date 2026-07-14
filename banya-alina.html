@@ -177,7 +177,8 @@ body.nav-open{overflow:hidden;}
   position:relative;min-height:100svh;min-height:100vh;display:flex;align-items:flex-end;
   overflow:hidden;
 }
-.hero__bg{position:absolute;inset:0;z-index:0;}
+.hero__bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:hidden;}
+.hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;}
 .hero__bg .ph{border:none;border-radius:0;height:100%;}
 .hero__scrim{position:absolute;inset:0;z-index:1;
   background:linear-gradient(180deg, rgba(55,38,32,.55) 0%, rgba(55,38,32,.28) 32%, rgba(55,38,32,.55) 68%, rgba(55,38,32,.9) 100%);
@@ -198,7 +199,11 @@ body.nav-open{overflow:hidden;}
   100%{transform:translateY(-78vh) translateX(-3%) scale(1.3);opacity:0;}
 }
 @media(prefers-reduced-motion:reduce){.wisp{animation:none;opacity:.25;}}
-
+@media(max-width:640px){
+    .hero-image{
+        object-position:center;
+    }
+}
 .hero__content{position:relative;z-index:3;color:var(--cream);width:100%;padding:170px 0 56px;}
 .hero__content .eyebrow{color:var(--gold);}
 .hero__content h1{font-size:clamp(2.6rem,1.7rem + 5vw,5.6rem);font-weight:600;margin-bottom:22px;}
@@ -580,10 +585,7 @@ svg,
 <!-- ============ HERO ============ -->
 <section class="hero" id="home">
   <div class="hero__bg">
-    <div class="ph ph--16-9" aria-hidden="true" style="height:100%;">
-      <svg class="ph__icon"><use href="#i-camera"/></svg>
-      <span class="ph__label">Фото: баня вечером, тёплый свет</span>
-    </div>
+    <img src="images/hero.jpg" alt="Банька у Алины" class="hero-image">
   </div>
   <div class="hero__scrim"></div>
   <div class="steam-wrap" aria-hidden="true">
