@@ -385,6 +385,29 @@ body.nav-open{overflow:hidden;}
 .center-text{text-align:center;}
 .mt-lg{margin-top:56px;}
 .text-narrow{max-width:640px;margin-left:auto;margin-right:auto;}
+/* ============ PRICE CALCULATOR ============ */
+.price-calc{background:var(--bg);border:1px solid var(--gold);border-radius:var(--r-m);box-shadow:var(--shadow-soft);max-width:none;margin:0;padding:44px 36px;min-width:0;width:100%;display:flex;flex-direction:column;}
+.price-calc .btn{margin-top:auto;}
+.price-calc__title{font-size:1.5rem;margin-bottom:24px;text-align:center;}
+.price-calc__field{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);}
+.price-calc__label{font-size:.96rem;color:var(--text-soft);}
+.price-calc__hint{display:block;font-size:.78rem;color:var(--text-soft);opacity:.75;margin-top:2px;}
+.stepper{display:flex;align-items:center;gap:14px;}
+.stepper__btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:600;color:var(--wood-deep);transition:background .25s var(--ease),border-color .25s var(--ease);flex-shrink:0;background:var(--bg);}
+.stepper__btn:hover{background:var(--bg-alt);border-color:var(--wood);}
+.stepper__btn:active{transform:scale(.94);}
+.stepper__value{min-width:28px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--text);}
+.price-calc__breakdown{padding:18px 0 0;color:var(--text-soft);font-size:.86rem;line-height:1.7;min-height:1.4em;}
+.price-calc__total{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;padding-top:18px;border-top:1px solid var(--line-strong);}
+.price-calc__total span:first-child{font-size:1rem;font-weight:600;color:var(--text);}
+.price-calc__total span:last-child{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--wood-deep);}
+.price-calc .btn{margin-top:26px;}
+@media(max-width:480px){.price-calc{padding:30px 22px;}}
+/* ============ PRICE GRID WRAP (panel + calculator side by side) ============ */
+.price-grid-wrap{display:grid;grid-template-columns:1fr;gap:28px;align-items:stretch;}
+@media(min-width:860px){.price-grid-wrap{grid-template-columns:1fr 1fr;gap:32px;}}
+.price-grid-wrap .price-panel,
+.price-grid-wrap .price-calc{max-width:none;margin:0;width:100%;}
 </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -632,21 +655,65 @@ body.nav-open{overflow:hidden;}
       <h2>Цены и бронирование</h2>
       <p>Цена одна для обеих бань — из бревна и кирпичной.</p>
     </div>
-    <div class="price-panel reveal">
-      <div class="price-panel__row">
-        <span class="price-panel__label">Базовая стоимость</span>
-        <span class="price-panel__value">900 ₽ / час <span style="font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:600;color:var(--text-soft);">до 2 гостей</span></span>
+
+    <div class="price-grid-wrap">
+      <div class="price-panel reveal">
+        <div class="price-panel__row">
+          <span class="price-panel__label">Базовая стоимость</span>
+          <span class="price-panel__value">900 ₽ / час <span style="font-family:'Manrope',sans-serif;font-size:.85rem;font-weight:600;color:var(--text-soft);">до 2 гостей</span></span>
+        </div>
+        <div class="price-panel__row">
+          <span class="price-panel__label">Каждый дополнительный гость</span>
+          <span class="price-panel__value">+100 ₽ / час</span>
+        </div>
+        <div class="price-panel__row">
+          <span class="price-panel__label">Минимальное бронирование</span>
+          <span class="price-panel__value">2 часа</span>
+        </div>
+        <p class="price-panel__note"><strong>Важно:</strong> с третьего часа доплата за гостей не увеличивается — прибавляется только базовая ставка.</p>
+        <a href="tel:+79272252763" class="btn btn-primary btn-block">Позвонить и забронировать</a>
       </div>
-      <div class="price-panel__row">
-        <span class="price-panel__label">Каждый дополнительный гость</span>
-        <span class="price-panel__value">+100 ₽ / час</span>
-      </div>
-      <div class="price-panel__row">
-        <span class="price-panel__label">Минимальное бронирование</span>
-        <span class="price-panel__value">2 часа</span>
-      </div>
-      <p class="price-panel__note"><strong>Важно:</strong> с третьего часа доплата за гостей не увеличивается — прибавляется только базовая ставка.</p>
-      <a href="tel:+79272252763" class="btn btn-primary btn-block">Позвонить и забронировать</a>
+
+      <div class="price-calc reveal reveal-delay-1" id="priceCalc">
+        <h3 class="price-calc__title">Рассчитать стоимость</h3>
+
+  <div class="price-calc__field">
+    <span class="price-calc__label">Часы аренды</span>
+    <div class="stepper">
+      <button type="button" class="stepper__btn" data-calc-dec="hours" aria-label="Уменьшить часы">–</button>
+      <span class="stepper__value" id="calcHoursVal">2</span>
+      <button type="button" class="stepper__btn" data-calc-inc="hours" aria-label="Увеличить часы">+</button>
+    </div>
+  </div>
+
+  <div class="price-calc__field">
+    <span class="price-calc__label">Гостей</span>
+    <div class="stepper">
+      <button type="button" class="stepper__btn" data-calc-dec="guests" aria-label="Уменьшить гостей">–</button>
+      <span class="stepper__value" id="calcGuestsVal">2</span>
+      <button type="button" class="stepper__btn" data-calc-inc="guests" aria-label="Увеличить гостей">+</button>
+    </div>
+  </div>
+
+  <div class="price-calc__field">
+    <span class="price-calc__label">Веники<span class="price-calc__hint">700 ₽ / шт</span></span>
+    <div class="stepper">
+      <button type="button" class="stepper__btn" data-calc-dec="veniki" aria-label="Уменьшить количество веников">–</button>
+      <span class="stepper__value" id="calcVenikiVal">0</span>
+      <button type="button" class="stepper__btn" data-calc-inc="veniki" aria-label="Увеличить количество веников">+</button>
+    </div>
+  </div>
+
+  <div class="price-calc__breakdown" id="calcBreakdown"></div>
+
+  <div class="price-calc__total">
+    <span>Итого</span>
+    <span id="calcTotal">1 800 ₽</span>
+  </div>
+
+  <a href="tel:+79272252763" class="btn btn-primary btn-block">Позвонить и забронировать</a>
+    </div>
+
     </div>
   </div>
 </section>
@@ -896,6 +963,62 @@ body.nav-open{overflow:hidden;}
 
   /* ---- footer year ---- */
   document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  var calc = document.getElementById('priceCalc');
+  if(!calc) return;
+
+  var state = { hours: 2, guests: 2, veniki: 0 };
+  var limits = { hours:{min:2,max:12}, guests:{min:1,max:20}, veniki:{min:0,max:10} };
+
+  var hoursVal = document.getElementById('calcHoursVal');
+  var guestsVal = document.getElementById('calcGuestsVal');
+  var venikiVal = document.getElementById('calcVenikiVal');
+  var totalEl = document.getElementById('calcTotal');
+  var breakdownEl = document.getElementById('calcBreakdown');
+
+  function formatRub(n){ return n.toLocaleString('ru-RU') + ' ₽'; }
+
+  function render(){
+    var extraGuests = Math.max(0, state.guests - 2);
+    var hourlyRate = 900 + extraGuests * 100;
+    var firstHours = Math.min(state.hours, 2);
+    var extraHours = Math.max(0, state.hours - 2);
+    var banyaCost = hourlyRate * firstHours + 900 * extraHours;
+    var venikiCost = state.veniki * 700;
+    var total = banyaCost + venikiCost;
+
+    hoursVal.textContent = state.hours;
+    guestsVal.textContent = state.guests;
+    venikiVal.textContent = state.veniki;
+
+    var lines = ['Баня: ' + formatRub(banyaCost)];
+    if(state.veniki > 0){
+      lines.push('Веники (' + state.veniki + ' шт × 700 ₽): ' + formatRub(venikiCost));
+    }
+    breakdownEl.innerHTML = lines.join('<br>');
+    totalEl.textContent = formatRub(total);
+  }
+
+  calc.querySelectorAll('[data-calc-inc]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var key = btn.getAttribute('data-calc-inc');
+      state[key] = Math.min(limits[key].max, state[key] + 1);
+      render();
+    });
+  });
+  calc.querySelectorAll('[data-calc-dec]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var key = btn.getAttribute('data-calc-dec');
+      state[key] = Math.max(limits[key].min, state[key] - 1);
+      render();
+    });
+  });
+
+  render();
 })();
 </script>
 </body>
